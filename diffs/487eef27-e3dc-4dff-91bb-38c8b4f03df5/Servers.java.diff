@@ -1,6 +1,3 @@
---- original
-+++ remediated
-@@ -0,0 +0,0 @@
  /*
   * This file is part of WebGoat, an Open Web Application Security Project utility. For details, please see http://www.owasp.org/
   *
@@ -69,13 +66,12 @@
      @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
      @ResponseBody
      public List<Server> sort(@RequestParam String column) throws Exception {
++          List<String> validColumns = Arrays.asList("id", "hostname", "ip", "mac", "status", "description");
++          if (!validColumns.contains(column)) {
++              throw new IllegalArgumentException("Invalid column name");
++          }
          List<Server> servers = new ArrayList<>();
-@@ -70,1 +70,4 @@
--
-+        List<String> validColumns = Arrays.asList("id", "hostname", "ip", "mac", "status", "description");
-+        if (!validColumns.contains(column)) {
-+            throw new IllegalArgumentException("Invalid column name");
-+        }
+ 
          try (var connection = dataSource.getConnection()) {
              try (var statement = connection.prepareStatement("select id, hostname, ip, mac, status, description from SERVERS where status <> 'out of order' order by " + column)) {
                  try (var rs = statement.executeQuery()) {
@@ -88,7 +84,5 @@
          }
          return servers;
      }
-@@ -83,0 +86,1 @@
-+    }
  
  }
