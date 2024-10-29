@@ -1,6 +1,3 @@
---- original
-+++ remediated
-@@ -0,0 +0,0 @@
  
  /*
   * This file is part of WebGoat, an Open Web Application Security Project utility. For details, please see http://www.owasp.org/
@@ -26,7 +23,6 @@
  
  package org.owasp.webgoat.lessons.sql_injection.introduction;
  
-@@ -26,0 +26,1 @@
 +import java.sql.PreparedStatement;
  import org.owasp.webgoat.container.LessonDataSource;
  import org.owasp.webgoat.container.assignments.AssignmentEndpoint;
@@ -74,7 +70,6 @@
  
      protected AttackResult injectableQuery(String query) {
          try (Connection connection = dataSource.getConnection()) {
-@@ -72,2 +73,4 @@
 -            try (Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
 -                statement.executeQuery(query);
 +            String sql = "SELECT * FROM some_table WHERE some_column = ?";
@@ -90,7 +85,6 @@
              return failed(this).output(this.getClass().getName() + " : " + e.getMessage() + "<br> Your query was: " + query).build();
          }
      }
-@@ -83,0 +86,2 @@
 +        }
 +    }
  
